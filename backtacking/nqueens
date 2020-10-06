@@ -1,0 +1,64 @@
+class Solution {
+    List<List<String>> res = new ArrayList();
+    public List<List<String>> solveNQueens(int n) {
+        String board[][] = new String[n][n];    
+        for(String b[]: board) {
+            Arrays.fill(b,".");
+        }
+        
+        boolean[] cols = new boolean[n];
+        boolean[] nd = new boolean[2 * n - 1];
+        boolean[] rd = new boolean[2 * n - 1];
+        solve(0, cols, nd, rd, board);
+        
+        return res;
+    }
+    
+    private void display(String board[][]) {
+        for(int i = 0; i < board.length; i++) {
+            for(int j = 0; j < board[i].length; j++) {
+                System.out.print(board[i][j]+" ");
+            }
+            System.out.println();
+        }
+    }
+    
+    private void addToList(String board[][]) {
+        List<String> list = new ArrayList<String>();
+        for(int i = 0; i < board.length; i++) {
+            String temp = "";
+            for(int j = 0; j < board[i].length; j++) {
+                if(board[i][j].equals(".")) {
+                    temp += ".";
+                }else {
+                    temp += "Q";
+                } 
+            }
+            list.add(temp);
+        }
+        res.add(list);
+    }
+    
+    
+    private void solve(int row, boolean cols[], boolean nd[], boolean rd[], String board[][]) {
+        
+        if(row == board.length) {
+            addToList(board);
+            return;
+        }
+        
+        for(int col = 0; col < board[0].length; col++) {
+            if(cols[col] == false && nd[row + col] == false && rd[row - col + board.length - 1] == false) {
+                cols[col] = true;
+                nd[row + col] = true;
+                rd[row - col + board.length - 1] = true;
+                board[row][col] = "Q";
+                solve(row + 1, cols, nd, rd, board);
+                    cols[col] = false;
+                    nd[row + col] = false;
+                    rd[row - col + board.length - 1] = false;
+                    board[row][col] = "."; 
+            }    
+        }
+    }
+}
