@@ -1,0 +1,37 @@
+class Solution {
+     int count = 0;
+    public int totalNQueens(int n) { 
+        String[][] board = new String[n][n];
+        for(String[] b: board) {
+            Arrays.fill(b, ".");
+        }
+        
+        boolean[] cols = new boolean[n];
+        boolean[] nd = new boolean[2 * n - 1];
+        boolean[] rd = new boolean[2 * n - 1];
+        
+        solve(0, cols, nd, rd, board);
+        return count;
+    }
+
+    private void solve(int row, boolean[] cols, boolean[] nd, boolean[] rd, String[][] board) {         
+        if(row == board.length) {
+            count++;
+            return;
+        }
+        
+        for(int col = 0; col < board.length; col++) {
+             if(cols[col] == false && nd[row + col] == false && rd[row - col + board.length - 1] == false) {
+                 cols[col] = true;
+                 nd[row + col] = true;
+                 rd[row - col + board.length - 1] = true;
+                 board[row][col] = "Q";
+                 solve(row + 1, cols, nd, rd, board);
+                 cols[col] = false;
+                 nd[row + col] = false;
+                 rd[row - col + board.length - 1] = false;
+                  board[row][col] = ".";
+             }
+        }
+    }
+}
